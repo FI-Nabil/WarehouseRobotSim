@@ -3,7 +3,7 @@
 A hybrid-language Warehouse Management System (WMS) simulation built with **.NET 10** and **Python 3**.
 
 ## Overview
-This project simulates a warehouse environment where autonomous robots fulfill furniture orders. The system uses a modular architecture:
+This project simulates a warehouse environment where autonomous robots fulfill various orders. The system uses a modular architecture:
 - **.NET Orchestrator:** Manages system state, simulation loops, and real-time APIs.
 - **Python Intelligence:** Handles high-performance pathfinding (BFS/A*) and optimization logic.
 
