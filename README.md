@@ -19,7 +19,7 @@ The project demonstrates **Inter-Process Communication (IPC)** between C# and Py
 - [x] Base project foundation and directory structure.
 - [x] Core domain models (Grid, Robot, Order).
 - [x] Functional C# to Python Bridge (Handshake verified).
-- [ ] Simulation Orchestration Engine (Current Focus).
+- [x] Simulation Orchestration Engine (Current Focus).
 - [ ] Visual Dashboard.
 
 ## Setup
