@@ -1,56 +1,28 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WarehouseRobotSim.Services; // Ensure this matches your namespace
+using WarehouseRobotSim.Services;
 
 namespace WarehouseRobotSim.Pages
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ILogger<IndexModel> _logger;
+		public readonly SimulationService _simulation;
 
-		public IndexModel(ILogger<IndexModel> logger)
+		// Dependency Injection: .NET gives us the existing SimulationService
+		public IndexModel(SimulationService simulation)
 		{
-			_logger = logger;
+			_simulation = simulation;
 		}
 
-		// This method runs automatically when you visit the Home page
-		public async Task OnGetAsync()
+		public void OnGet()
 		{
-			_logger.LogInformation("--- STARTING PYTHON BRIDGE TEST ---");
-
-			// 1. Setup the bridge
-			var bridge = new PythonBridgeService();
-
-			// 2. Create a basic 5x5 grid (0 is empty space)
-			int[][] testGrid = new int[5][];
-			for (int i = 0; i < 5; i++) testGrid[i] = new int[5] { 0, 0, 0, 0, 0 };
-
-			// 3. Set a start (Top Left) and end (Bottom Right)
-			int[] start = { 0, 0 };
-			int[] end = { 4, 4 };
-
-			try
+			// We start the simulation in a "Fire and Forget" manner for this test
+			// so the page finishes loading while the robot moves in the background.
+			_ = Task.Run(async () =>
 			{
-				// 4. Call Python
-				var path = await bridge.GetPathAsync(start, end, testGrid);
-
-				// 5. Output results to the Visual Studio Debug console
-				if (path != null && path.Count > 0)
-				{
-					_logger.LogInformation("SUCCESS: Python returned a path!");
-					foreach (var step in path)
-					{
-						_logger.LogInformation($"Path Step: [{step[0]}, {step[1]}]");
-					}
-				}
-				else
-				{
-					_logger.LogWarning("FAILURE: Python returned no path.");
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError($"CRITICAL ERROR: {ex.Message}");
-			}
+				Console.WriteLine(">>> Simulation Starting: Moving to [5,5]");
+				await _simulation.StartDeliveryAsync(5, 5);
+				Console.WriteLine(">>> Simulation Finished!");
+			});
 		}
 	}
 }
